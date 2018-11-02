@@ -1,12 +1,6 @@
 from sympy import *
-from mpmath import *
 import random
 t = symbols('t')
-
-def abs_list(input):
-	temp = input
-	map(lambda a: abs(a), temp)
-	return temp
 
 def gaussian_gcd(a, b):
     a, b = map(sympify, (a, b))
@@ -86,15 +80,27 @@ def four_Square(n):
 		d = multiplicity_of_Two(n)
 		if d % 2 ==1:
 			s = 2 ** (d-1)
-			result = two_times_2kPlus1_Case(n/s)
-			map(lambda a: a * (2 ** ((d-1)/2)),result)
+			result = [i * int(sqrt(s)) for i in two_times_2kPlus1_Case(n/s)]
+			return result
 		else:
-			result = n_Odd_Case(n/(2 ** d))
-			map(lambda a: a * (2 ** (d/2)), result)
+			temp = four_Square(2*n)
+			map(lambda a: abs(a), temp)
+			if len(filter(lambda a: a % 2 ==1, temp))!=0 and len(filter(lambda a: a % 2 ==1, temp))!=4:
+				odd = filter(lambda a: a % 2 ==1, temp)
+				even = filter(lambda a: a % 2 ==0, temp)
+				x = odd[0]
+				y = odd[1]
 
-		map(lambda a: abs(a), result)
-		return result
+				z = even[0]
+				w = even[1]
+				return [(x+y)/2,(x-y)/2,(w+z)/2,(w-z)/2]
+			else:
+				x = temp[0]
+				y = temp[1]
+				z = temp[2]
+				w = temp[3]
+				return [(x+y)/2,(x-y)/2,(w+z)/2,(w-z)/2]
 
 
-print four_Square(999)
+print four_Square(71382)
 
